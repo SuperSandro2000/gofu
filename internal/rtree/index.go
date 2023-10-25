@@ -209,7 +209,7 @@ configRemotes:
 
 		// ask the user what to do with remotes not existing in checked out repo
 		selection, err := cli.Interface.Query(
-			fmt.Sprintf("repository %s's remote %s has been deleted", repo.AbsolutePath(), remote.Name),
+			fmt.Sprintf(`repository "%s" remote "%s" has been deleted`, repo.AbsolutePath(), remote.Name),
 			cli.Choice{Return: "r", Shortcut: 'r', Text: "restore from " + remote.URL.CompactURL()},
 			cli.Choice{Return: "d", Shortcut: 'd', Text: "delete from index"},
 			cli.Choice{Return: "s", Shortcut: 's', Text: "skip"},
@@ -270,13 +270,13 @@ func handleDeleteRepo(repo Repo) (*Repo, error) {
 	)
 	if len(remoteURLs) == 0 {
 		selection, err = cli.Interface.Query(
-			fmt.Sprintf("repository %s has been deleted; no remote to restore from", repo.AbsolutePath()),
+			fmt.Sprintf(`repository "%s" has been deleted; no remote to restore from`, repo.AbsolutePath()),
 			cli.Choice{Return: "d", Shortcut: 'd', Text: "delete from index"},
 			cli.Choice{Return: "s", Shortcut: 's', Text: "skip"},
 		)
 	} else {
 		selection, err = cli.Interface.Query(
-			fmt.Sprintf("repository %s has been deleted", repo.AbsolutePath()),
+			fmt.Sprintf(`repository "%s" has been deleted`, repo.AbsolutePath()),
 			cli.Choice{Return: "r", Shortcut: 'r', Text: "restore from " + strings.Join(remoteURLs, " and ")},
 			cli.Choice{Return: "d", Shortcut: 'd', Text: "delete from index"},
 			cli.Choice{Return: "s", Shortcut: 's', Text: "skip"},
@@ -465,7 +465,7 @@ func (i *Index) ImportRepo(dirPath string) error {
 			return errors.New("repo has no remotes")
 		}
 
-		question := fmt.Sprintf("Repo has multiple remotes. Where to put below %s?", RootPath)
+		question := fmt.Sprintf(`Repo has multiple remotes. Where to put below "%s"?`, RootPath)
 		checkoutPath, err = cli.Interface.Query(question, choices...)
 		if err != nil {
 			return err
